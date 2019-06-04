@@ -1,6 +1,7 @@
 module.exports = [
     {
         name: 'portfolio_popup',
+        category: "portfolio",
         storeName: {
             en_GB: "Portfolio-Popup",
             fr_FR: "Portfolio-Popup"
