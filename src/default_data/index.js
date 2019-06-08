@@ -1,13 +1,14 @@
 module.exports = [
     {
-        name: 'portfolio_popup',
-        category: "portfolio",
+        name: 'portfolio-popup',
+        category: 'portfolio',
         storeName: {
-            en_GB: "Portfolio-Popup",
-            fr_FR: "Portfolio-Popup"
+            en: "Portfolio-Popup",
+            fr: "Portfolio-Popup",
         },
         storeDesc: {
-            en_GB: ""
+            en: "Image gallery with a filter function by category. Each element of the portfolio active a popup.",
+            fr: "Galerie d'images avec une fonction de filtres par catégorie. Chaque élément du portfolio est lié a un popup."
         }
     }
 ]

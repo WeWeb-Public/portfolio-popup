@@ -21,23 +21,23 @@
                 <span>{{section.data.paddings}}px</span>
                 <wwManagerSlider type="ratio" v-model="section.data.paddings" v-on:change="sectionCtrl.update(section)"/>
             </div>
-            <!-- wwManager:end -->
             <!-- CATEGORIES -->
             <div class="categories">
-                <div class="category" @click="selectedCategory = 'all'" v-if="editMode || categories.isAll">
-                    <span class="name">{{ wwLang.getText(langTextAll) }}</span>
-                </div>
-                <div class="category" v-for="category in categories.data" :key="category.name" @click="selectedCategory = category.name">
+                <span class="category" @click="selectedCategory = 'all'" v-if="editMode || categories.isAll">
+                    <span class="name">{{ wwLang.getText(lang.all) }}</span>
+                </span>
+                <span class="category" v-for="category in categories.data" :key="category.name" @click="selectedCategory = category.name">
                     <span class="name">{{ wwLang.getText(category.displayName) }}</span>
-                </div>
+                </span>
             </div>
             <!-- ITEMS LIST -->
             <div class="items-container" :style="{'min-height': itemsHeight + 'px'}">
-                <div class="items">
+                <div class="items" :style="{ 'flex-basis': containerWidth + 'px'}">
                     <div v-for="(item,index) in section.data.items" :key="index" :data-item="index"
                         @click="selectItem(index)"
                         :ref="`item-${index}`"
-                        class="item" :class="[`item-${index}`, { 'hide': !item.show }]"
+                        class="item" :class="[`item-${index}`]"
+                        v-if="item.show"
                         :style="[getPosition(index), itemStyle]">
                         <!-- wwManager:start -->
                         <wwContextMenu class="ww-orange-button" tag="div"
@@ -57,7 +57,7 @@
                 </div>
             </div>
             <!-- MORE ITEMS BUTTON -->
-            <div class="items-more-btn" @click="moreItems" v-if="section.data.itemsLoading.type === 'items' && maxItems < itemsLength">
+            <div class="items-more-btn" @click="moreItems" v-if="section.data.itemsLoading.type === 'items' && maxItems < nbItemsToShow">
                 <wwObject :ww-object="section.data.moreItemsBtn"></wwObject>
             </div>
         </div>
@@ -89,6 +89,7 @@
 /* wwManager:start */
 import portfolioOptions from './portfolioOptions.vue'
 import portfolioItemOptions from './portfolioItemOptions.vue'
+import lang from './lang.json'
 
 wwLib.wwPopups.addPopup('portfolioOptions', portfolioOptions)
 wwLib.wwPopups.addPopup('portfolioItemOptions', portfolioItemOptions)
@@ -139,7 +140,7 @@ export default {
         return {
             // LANG
             wwLang: wwLib.wwLang,
-            langTextAll: { en: 'All', fr: 'Tous' },
+            lang: lang,
             portefolioOptions: {
                name: {  //Nom du popup, si vide le popup s'appelle 'Menu'
                    en: 'Item',
@@ -189,6 +190,7 @@ export default {
             itemsPerLine: 3,
             itemsHeight: 0,
             maxItems: 20,
+            nbItemsToShow: 0,
             // POSITIONS
             containerWidth: 0,
             columnsHeight: [],
@@ -251,9 +253,6 @@ export default {
         itemSelectedBlocks () {
             if (this.selectedItemIdx === undefined) return undefined
             return this.itemSelected.blocks
-        },
-        itemsLength () {
-            return this.section.data.items.map(item => item.show).length
         }
     },
     watch: {
@@ -284,7 +283,7 @@ export default {
                 needUpdate = true;
             }
             if (!this.section.data.closeBtn) {
-                this.section.data.closeBtn = wwLib.wwObject.getDefault({ type: 'ww-icon' })
+                this.section.data.closeBtn = wwLib.wwObject.getDefault({ type: 'ww-icon', data: { icon: 'wwi wwi-cross' } })
                 needUpdate = true;
             }
             if (!this.section.data.itemsPerLine) {
@@ -331,7 +330,7 @@ export default {
                     this.section.data.items.push({
                         tags: [tag1],
                         show: true,
-                        prio: Math.random(),
+                        prio: i * 10,
                         data: [
                             wwLib.wwObject.getDefault({
                                 type: 'ww-image',
@@ -365,7 +364,10 @@ export default {
             window.addEventListener('resize', this.onResize);
         },
         onResize () {
-            this.containerWidth = this.$el.querySelector('.items').getBoundingClientRect().width;
+            const newWidth = window.innerWidth - (window.innerWidth >=992 ? 50 : 0)
+            if (Math.abs(newWidth - this.containerWidth) > 30) {
+                this.containerWidth = newWidth
+            }
 
             if (window.innerWidth < 768) {
                 this.itemsPerLine = this.section.data.itemsPerLine.mobile || 1;
@@ -377,7 +379,7 @@ export default {
                 this.itemsPerLine = this.section.data.itemsPerLine.bigScreen || 4;
             }
 
-            this.calculatePos();
+            this.calculatePos()
         },
         calculatePos () {
             if (!this.$el) return
@@ -534,10 +536,10 @@ export default {
             if (this.section.data.itemsLoading.type === 'scroll') {
                 // console.log('scroll')
             } else if (this.section.data.itemsLoading.type === 'items') {
-                let i = 0
+                this.nbItemsToShow = 0
                 for (const elem of this.section.data.items) {
-                    if (elem.show) { ++i }
-                    if (i > this.maxItems) { elem.show = false }
+                    if (elem.show) { ++this.nbItemsToShow }
+                    if (this.nbItemsToShow > this.maxItems) { elem.show = false }
                 }
             }
 
@@ -553,7 +555,7 @@ export default {
         /* wwManager:start */
         duplicateItemToStart (index) {
             const item = JSON.parse(JSON.stringify(this.section.data.items[index]))
-            wwLib.wwUtils.changeUniqueIds(item.data)
+            wwLib.wwUtils.changeUniqueIds(item)
             item.prio = this.getMaxPrio() + 1
             this.section.data.items.unshift(item)
 
@@ -564,7 +566,7 @@ export default {
         },
         duplicateItemToEnd (index) {
             const item = JSON.parse(JSON.stringify(this.section.data.items[index]))
-            wwLib.wwUtils.changeUniqueIds(item.data)
+            wwLib.wwUtils.changeUniqueIds(item)
             item.prio = this.getMinPrio() - 1 
             this.section.data.items.push(item)
 
@@ -727,16 +729,24 @@ export default {
 
     .content {
         position: relative;
-
+        width: 100%;
         .top-wwobjs {
             position: relative;
         }
 
         .categories {
-            margin: 20px 0;
+            margin: 20px 10px;
             display: flex;
             justify-content: center;
-
+            align-items: center;
+            width: 100%;
+            width: auto;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            white-space: nowrap;
+            pointer-events: all;
+            padding-bottom: 25px;
+            
             .category {
                 padding: 0 20px;
                 position: relative;
@@ -766,7 +776,6 @@ export default {
             display: flex;
             justify-content: center;
             transition: all 0.5s ease;
-            // overflow-y: hidden;
 
             .items {
                 position: relative;
@@ -824,7 +833,7 @@ export default {
     height: 100%;
     top: 0;
     left: 0;
-    z-index: 100;
+    z-index: 200;
     pointer-events: all;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -833,6 +842,9 @@ export default {
     &.selected {
         background: white;
     }
+    @media (max-width: 1024px) {
+        overflow-y: auto;
+    }
 
     .item-fixed {
         position: fixed;
@@ -840,6 +852,7 @@ export default {
         height: 100%;
         overflow: hidden;
         @media (max-width: 1024px) {
+            position: relative !important;
             height: 33% !important;
             width: 100% !important;
         }
@@ -856,12 +869,14 @@ export default {
     }
 
     .content-fixed {
-        position: relative;
+        overflow-x: hidden;
         width: 50%;
+        height: 100%;
         opacity: 0;
         margin-left: 50%;
         @media (max-width: 1024px) {
             width: 100%;
+            height: unset;
             margin-left: unset;
         }
         -webkit-transition: opacity 0.5s ease 0.5s;
