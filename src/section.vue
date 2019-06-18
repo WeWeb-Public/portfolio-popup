@@ -33,21 +33,10 @@
             <!-- ITEMS LIST -->
             <div class="items-container" :style="{'min-height': itemsHeight + 'px'}">
                 <div class="items" :style="{ 'flex-basis': containerWidth + 'px'}">
-                    <div v-for="(item,index) in section.data.items" :key="index" :data-item="index"
-                        @click="selectItem(index)"
-                        :ref="`item-${index}`"
-                        class="item" :class="[`item-${index}`]"
-                        v-if="item.show"
-                        :style="[getPosition(index), itemStyle]">
+                    <div v-for="(item,index) in section.data.items" :key="index" :data-item="index" @click="selectItem(index)" :ref="`item-${index}`" class="item" :class="[`item-${index}`]" v-if="item.show" :style="[getPosition(index), itemStyle]">
                         <!-- wwManager:start -->
-                        <wwContextMenu class="ww-orange-button" tag="div"
-                            :options="portefolioOptions" 
-                            @duplicateItemToStart="duplicateItemToStart(index)"
-                            @duplicateItemToEnd="duplicateItemToEnd(index)"
-                            @openItemOptions="openItemOptions(index)"
-                            @removeItem="removeItem(index)"
-                            :style="{ top: `${section.data.paddings}px`, left: `${section.data.paddings}px` }" v-if="editMode">
-                            <wwOrangeButton ></wwOrangeButton>
+                        <wwContextMenu class="ww-orange-button" tag="div" :options="portefolioOptions" @duplicateItemToStart="duplicateItemToStart(index)" @duplicateItemToEnd="duplicateItemToEnd(index)" @openItemOptions="openItemOptions(index)" @removeItem="removeItem(index)" :style="{ top: `${section.data.paddings}px`, left: `${section.data.paddings}px` }" v-if="editMode">
+                            <wwOrangeButton></wwOrangeButton>
                         </wwContextMenu>
                         <!-- wwManager:end -->
                         <wwLayoutColumn tag="div" :ww-list="item.data" @ww-add="add(item.data, $event)" @ww-remove="remove(item.data, $event)">
@@ -142,44 +131,44 @@ export default {
             wwLang: wwLib.wwLang,
             lang: lang,
             portefolioOptions: {
-               name: {  //Nom du popup, si vide le popup s'appelle 'Menu'
-                   en: 'Item',
-                   fr: 'Élement'
-               },
-               items: [  //Liste des options dans le popup
-                   {
-                       text: {
-                           en: 'Duplicate to start',
-                           fr: 'Dupliquer au début'
-                       },
-                       icon: 'wwi wwi-paste',
-                       action: 'duplicateItemToStart'
-                   },
-                   {
-                       text: {
-                           en: 'Duplicate to end',
-                           fr: 'Dupliquer à la fin'
-                       },
-                       icon: 'wwi wwi-paste',
-                       action: 'duplicateItemToEnd'
-                   },
-                   {
-                       text: {
-                           en: 'Delete',
-                           fr: 'Supprimer'
-                       },
-                       icon: 'wwi wwi-delete',
-                       action: 'removeItem'
-                   },
-                   {
-                       text: {
-                           en: 'Options',
-                           fr: 'Options'
-                       },
-                       icon: 'wwi wwi-edit-other',
-                       action: 'openItemOptions'
-                   }
-               ]
+                name: {  //Nom du popup, si vide le popup s'appelle 'Menu'
+                    en: 'Item',
+                    fr: 'Élement'
+                },
+                items: [  //Liste des options dans le popup
+                    {
+                        text: {
+                            en: 'Duplicate to start',
+                            fr: 'Dupliquer au début'
+                        },
+                        icon: 'wwi wwi-paste',
+                        action: 'duplicateItemToStart'
+                    },
+                    {
+                        text: {
+                            en: 'Duplicate to end',
+                            fr: 'Dupliquer à la fin'
+                        },
+                        icon: 'wwi wwi-paste',
+                        action: 'duplicateItemToEnd'
+                    },
+                    {
+                        text: {
+                            en: 'Delete',
+                            fr: 'Supprimer'
+                        },
+                        icon: 'wwi wwi-delete',
+                        action: 'removeItem'
+                    },
+                    {
+                        text: {
+                            en: 'Options',
+                            fr: 'Options'
+                        },
+                        icon: 'wwi wwi-edit-other',
+                        action: 'openItemOptions'
+                    }
+                ]
             },
             // SELECTED ELEMS
             selectedCategory: 'all',
@@ -202,27 +191,27 @@ export default {
             defaultCategories: {
                 isAll: true,
                 data: [
-                {
-                    name: 'animals',
-                    displayName: {
-                        en: 'Animals',
-                        fr: 'Animaux'
-                    }
-                },
-                {
-                    name: 'buildings',
-                    displayName: {
-                        en: 'Buildings',
-                        fr: 'Batiments'
-                    }
-                },
-                {
-                    name: 'landscapes',
-                    displayName: {
-                        en: 'Landscapes',
-                        fr: 'Landscapes'
-                    }
-                }]
+                    {
+                        name: 'animals',
+                        displayName: {
+                            en: 'Animals',
+                            fr: 'Animaux'
+                        }
+                    },
+                    {
+                        name: 'buildings',
+                        displayName: {
+                            en: 'Buildings',
+                            fr: 'Batiments'
+                        }
+                    },
+                    {
+                        name: 'landscapes',
+                        displayName: {
+                            en: 'Landscapes',
+                            fr: 'Landscapes'
+                        }
+                    }]
             }
         }
     },
@@ -230,41 +219,41 @@ export default {
         //Get the section object here !
         // It contains all the info and data about the section
         // Use it has you like !
-        section () {
+        section() {
             return this.sectionCtrl.get();
         },
-        editMode () {
+        editMode() {
             return this.sectionCtrl.getEditMode()
         },
-        itemStyle () {
+        itemStyle() {
             return {
                 padding: `${this.section.data.paddings}px`,
                 width: `${100 / this.itemsPerLine}%`
             }
         },
-        imgItemSelectedMainImage () {
+        imgItemSelectedMainImage() {
             if (this.selectedItemIdx === undefined) return undefined
             return this.itemSelected.mainImage
         },
-        itemSelected () {
+        itemSelected() {
             if (this.selectedItemIdx === undefined) return undefined
             return this.section.data.items[this.selectedItemIdx]
         },
-        itemSelectedBlocks () {
+        itemSelectedBlocks() {
             if (this.selectedItemIdx === undefined) return undefined
             return this.itemSelected.blocks
         }
     },
     watch: {
-        selectedCategory () {
+        selectedCategory() {
             this.filterItems();
         },
-        maxItems () {
+        maxItems() {
             this.filterItems();
         }
     },
     methods: {
-        initData () {
+        initData() {
             let needUpdate = false;
 
             //Initialize section data
@@ -302,11 +291,11 @@ export default {
                 this.section.data.itemsLoading = { type: 'all', itemNumber: 20 }
                 needUpdate = true;
             }
-            
+
             this.categories = this.section.data.categories
             this.maxItems = this.section.data.itemsLoading.itemNumber
             this.selectedCategory = (this.section.data.categories.isAll) ? 'all' : this.section.data.categories.data[0].name
-            
+
             if (!this.section.data.items) {
                 this.section.data.items = []
                 for (let i = 0; i < 20; i++) {
@@ -340,11 +329,11 @@ export default {
                             })
                         ],
                         mainImage: wwLib.wwObject.getDefault({
-                                type: 'ww-image',
-                                data: {
-                                    url: url
-                                }
-                            }),
+                            type: 'ww-image',
+                            data: {
+                                url: url
+                            }
+                        }),
                         blocks: []
                     })
                 }
@@ -357,14 +346,14 @@ export default {
 
             this.filterItems();
         },
-        init () {
+        init() {
 
             this.$nextTick(this.onResize)
 
             window.addEventListener('resize', this.onResize);
         },
-        onResize () {
-            const newWidth = window.innerWidth - (window.innerWidth >=992 ? 50 : 0)
+        onResize() {
+            const newWidth = window.innerWidth - (window.innerWidth >= 992 ? 50 : 0)
             if (Math.abs(newWidth - this.containerWidth) > 30) {
                 this.containerWidth = newWidth
             }
@@ -381,7 +370,7 @@ export default {
 
             this.calculatePos()
         },
-        calculatePos () {
+        calculatePos() {
             if (!this.$el) return
             this.itemsHeight = 0;
             this.columnsHeight = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -396,7 +385,7 @@ export default {
                     continue;
                 }
                 let col = 0;
-                const rect = this.$el.querySelector('[data-item="' + i + '"').getBoundingClientRect();
+                const rect = this.$el.querySelector('[data-item="' + i + '"]').getBoundingClientRect();
 
                 let minColHeight = 10000000000;
                 for (let j = 0; j < this.itemsPerLine; j++) {
@@ -425,18 +414,18 @@ export default {
             this.itemsHeight = maxColHeight + 10
             this.recalculatePos();
         },
-        recalculatePos () {
+        recalculatePos() {
             this.ratios = [];
             clearTimeout(this.calculatePosTimeout);
             this.calculatePosTimeout = setTimeout(this.calculatePos, 100);
         },
-        getPosition (index) {
+        getPosition(index) {
             return this.positions[index] || {}
         },
-        setScrolling (bool) {
+        setScrolling(bool) {
             document.documentElement.style.overflow = (bool) ? 'initial' : 'hidden'
         },
-        imgRelativeToFixed (index) {
+        imgRelativeToFixed(index) {
             const imgElem = this.$refs[`item-${index}`][0]
             const popupFixedElem = this.$refs['popup-fixed']
             const imgFixedElem = this.$refs['item-fixed']
@@ -455,16 +444,16 @@ export default {
             imgFixedElem.style.height = `${elemRect.height}px`;
             imgFixedElem.style.padding = `${this.section.data.paddings}px`
             imgFixedElem.style.opacity = 0;
-            
+
             const self = this
             setTimeout(function () {
                 if (imgFixedElem) {
                     imgFixedElem.classList.remove('no-anim');
                 }
-                
+
                 self.setScrolling(false);
                 self.sectionCtrl.update(self.section);
-                
+
                 // ITEM IMG 
                 imgFixedElem.style.top = `0px`
                 imgFixedElem.style.left = `0px`
@@ -479,7 +468,7 @@ export default {
             }, 250);
             return imgFixedElem;
         },
-        closeFixedContent () {
+        closeFixedContent() {
             if (this.editMode) return
             const popupFixedElem = this.$refs['popup-fixed']
             const contentFixedElem = this.$refs['content-fixed']
@@ -492,24 +481,24 @@ export default {
         /*=============================================m_ÔÔ_m=============================================\
           MANAGE ITEMS
         \================================================================================================*/
-        getMaxPrio () {
-           const itemMaxPrio = this.section.data.items.reduce((a , b) => a.prio > b.prio ? a : b)
-           return itemMaxPrio.prio
+        getMaxPrio() {
+            const itemMaxPrio = this.section.data.items.reduce((a, b) => a.prio > b.prio ? a : b)
+            return itemMaxPrio.prio
         },
-        getMinPrio () {
-           const itemMinPrio = this.section.data.items.reduce((a , b) => a.prio < b.prio ? a : b)
-           return itemMinPrio.prio
+        getMinPrio() {
+            const itemMinPrio = this.section.data.items.reduce((a, b) => a.prio < b.prio ? a : b)
+            return itemMinPrio.prio
         },
-        selectItem (index) {
+        selectItem(index) {
             if (this.editMode) return
             this.selectedItemIdx = index
             this.imgRelativeToFixed(index);
         },
-        moreItems () {
+        moreItems() {
             this.maxItems += this.section.data.itemsLoading.itemNumber
             this.filterItems()
         },
-        filterItems () {
+        filterItems() {
             // CATEGORIES
             if (this.selectedCategory === 'all') {
                 for (let item of this.section.data.items) {
@@ -553,7 +542,7 @@ export default {
             this.$forceUpdate();
         },
         /* wwManager:start */
-        duplicateItemToStart (index) {
+        duplicateItemToStart(index) {
             const item = JSON.parse(JSON.stringify(this.section.data.items[index]))
             wwLib.wwUtils.changeUniqueIds(item)
             item.prio = this.getMaxPrio() + 1
@@ -564,10 +553,10 @@ export default {
             this.filterItems();
             this.recalculatePos();
         },
-        duplicateItemToEnd (index) {
+        duplicateItemToEnd(index) {
             const item = JSON.parse(JSON.stringify(this.section.data.items[index]))
             wwLib.wwUtils.changeUniqueIds(item)
-            item.prio = this.getMinPrio() - 1 
+            item.prio = this.getMinPrio() - 1
             this.section.data.items.push(item)
 
             this.sectionCtrl.update(this.section);
@@ -575,7 +564,7 @@ export default {
             this.filterItems();
             this.recalculatePos();
         },
-        removeItem (index) {
+        removeItem(index) {
             this.section.data.items.splice(index, 1);
             this.sectionCtrl.update(this.section);
 
@@ -586,14 +575,14 @@ export default {
           TOP WWBJECTS
         \================================================================================================*/
         /* wwManager:start */
-        add (list, options) {
+        add(list, options) {
             list.splice(options.index, 0, options.wwObject);
 
             this.sectionCtrl.update(this.section);
 
             this.recalculatePos();
         },
-        remove (list, options) {
+        remove(list, options) {
             list.splice(options.index, 1);
 
             this.sectionCtrl.update(this.section);
@@ -660,7 +649,7 @@ export default {
                     }
                 }
                 const result = await wwLib.wwPopups.open(options)
-                
+
                 if (result.prio) {
                     this.section.data.items[index].prio = result.prio;
                     this.sectionCtrl.update(this.section);
@@ -687,7 +676,7 @@ export default {
                     },
                 }
                 const result = await wwLib.wwPopups.open(options)
-                
+
                 if (result.category) {
                     this.section.data.items[index].category = result.category;
                     this.section.data.items[index].prio = this.getMaxPrio() + 1
@@ -746,7 +735,7 @@ export default {
             white-space: nowrap;
             pointer-events: all;
             padding-bottom: 25px;
-            
+
             .category {
                 padding: 0 20px;
                 position: relative;
