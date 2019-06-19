@@ -21,6 +21,7 @@
                 <span>{{section.data.paddings}}px</span>
                 <wwManagerSlider type="ratio" v-model="section.data.paddings" v-on:change="sectionCtrl.update(section)"/>
             </div>
+            <!-- wwManager:end -->
             <!-- CATEGORIES -->
             <div class="categories">
                 <span class="category" @click="selectedCategory = 'all'" v-if="editMode || categories.isAll">
