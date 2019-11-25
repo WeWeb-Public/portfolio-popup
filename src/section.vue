@@ -717,6 +717,7 @@ export default {
         this.initData();
     },
     beforeDestroy() {
+        this.setScrolling(true)
         window.removeEventListener('resize', this.onResize);
     }
 };
