@@ -19,7 +19,7 @@
             <!-- RATIO PADDINGS -->
             <div v-if="editMode" class="top-ratio-slider">
                 <span>{{section.data.paddings}}px</span>
-                <wwManagerSlider type="ratio" v-model="section.data.paddings" v-on:change="sectionCtrl.update(section)"/>
+                <wwManagerSlider type="ratio" v-model="section.data.paddings" v-on:change="sectionCtrl.update(section)" />
             </div>
             <!-- wwManager:end -->
             <!-- CATEGORIES -->
@@ -76,10 +76,11 @@
 <!-- This is your Javascript -->
 <!-- ✨ Here comes the magic ✨ -->
 <script>
+import lang from './lang.json'
+
 /* wwManager:start */
 import portfolioOptions from './portfolioOptions.vue'
 import portfolioItemOptions from './portfolioItemOptions.vue'
-import lang from './lang.json'
 
 wwLib.wwPopups.addPopup('portfolioOptions', portfolioOptions)
 wwLib.wwPopups.addPopup('portfolioItemOptions', portfolioItemOptions)
@@ -752,7 +753,7 @@ export default {
             align-items: center;
             width: 100%;
             width: auto;
-            overflow-x: scroll;
+            overflow-x: auto;
             overflow-y: hidden;
             white-space: nowrap;
             pointer-events: all;
