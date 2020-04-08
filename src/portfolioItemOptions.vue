@@ -5,7 +5,7 @@
             <div class="content-elem tags">
                 <div class="title">{{wwLang.getText(lang.categories)}}</div>
                 <div v-for="tag in tags.data" :key="tag" class="tag">
-                    <wwManagerRadio :value="isTag(tag)" @change="changeTag(tag)"/>
+                    <wwManagerRadio :value="isTag(tag)" @change="changeTag(tag)" />
                     <span class="tag-name">{{wwLang.getText(tag.displayName)}}</span>
                 </div>
             </div>
@@ -13,70 +13,70 @@
             <div class="content-elem prio">
                 <div class="title">{{wwLang.getText(lang.priority)}}</div>
                 <span>{{wwLang.getText(lang.priorityMessage)}}</span>
-                <wwManagerInput class="input" type="number" color="green" v-model="prio" label="Prio" v-on:change="updateResult"/>
+                <wwManagerInput class="input" type="number" color="green" v-model="prio" label="Prio" v-on:change="updateResult" />
             </div>
         </div>
     </div>
 </template>
 
-<script> 
-import lang from './lang.json'
+<script>
+import lang from "./lang.json";
 
 export default {
     name: "portfolioOptions",
     props: {
         options: {
             type: Object,
-            default () {
-                return {}
+            default() {
+                return {};
             }
-        },
+        }
     },
-    data () {
+    data() {
         return {
             wwLang: wwLib.wwLang,
             lang: lang,
             item: {},
             tags: {},
-            prio: ''
-        }
+            prio: ""
+        };
     },
     methods: {
-        init () {
-            this.item = this.options.data.item
-            this.tags = this.options.data.tags
-            this.prio = this.item.prio
-            this.options.result.prio = this.prio
-            this.options.result.tags = this.item.tags
+        init() {
+            this.item = this.options.data.item;
+            this.tags = this.options.data.tags;
+            this.prio = this.item.prio;
+            this.options.result.prio = this.prio;
+            this.options.result.tags = this.item.tags;
         },
-        updateResult () {
-            this.options.result.prio = this.prio
-            this.options.result.tags = this.item.tags
+        updateResult() {
+            this.options.result.prio = this.prio;
+            this.options.result.tags = this.item.tags;
         },
-        isTag (tag) {
-            return this.item.tags.indexOf(tag.name) !== -1
+        isTag(tag) {
+            return this.item.tags.indexOf(tag.name) !== -1;
         },
-        changeTag (tag) {
+        changeTag(tag) {
             if (this.isTag(tag)) {
-                const index = this.item.tags.indexOf(tag.name)
-                this.item.tags.splice(index, 1)
+                const index = this.item.tags.indexOf(tag.name);
+                this.item.tags.splice(index, 1);
             } else {
-                this.item.tags.push(tag.name)
+                this.item.tags.push(tag.name);
             }
-            this.updateResult()
+            this.updateResult();
         }
     },
-    mounted () {
-        this.init()
+    mounted() {
+        this.init();
     }
-}
+};
 </script>
 
 <style lang="scss" scoped>
 .item-options {
     display: inline-flex;
     justify-content: center;
-    align-items: start;
+    align-items: flex-start;
     .content {
         display: flex;
         padding: 20px;
