@@ -299,7 +299,7 @@ export default {
             this.maxItems = this.section.data.itemsLoading.itemNumber
             this.selectedCategory = (this.section.data.categories.isAll) ? 'all' : this.section.data.categories.data[0].name
 
-            // if (!this.section.data.items) {
+            if (!this.section.data.items) {
                 this.section.data.items = []
                 for (let i = 0; i < 20; i++) {
                     const tag1 = this.categories.data[Math.ceil(Math.random() * (this.categories.data.length)) - 1].name;
@@ -341,7 +341,7 @@ export default {
                     })
                 }
                 needUpdate = true;
-            // }
+            }
 
             if (needUpdate) {
                 this.sectionCtrl.update(this.section);
