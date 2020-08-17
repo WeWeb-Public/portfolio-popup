@@ -58,7 +58,7 @@
             <!-- wwManager:end -->
             <!-- POPUP LEFT BACKGROUND -->
             <div class="item-fixed" ref="item-fixed">
-                <wwObject class="background" :ww-object="imgItemSelectedMainImage" ww-category="background"></wwObject>
+                <wwObject class="background" v-if="imgItemSelectedMainImage" :ww-object="imgItemSelectedMainImage" ww-category="background"></wwObject>
             </div>
             <!-- POPUP RIGHT BACKGROUND -->
             <div class="content-fixed" ref="content-fixed">
@@ -235,6 +235,7 @@ export default {
         },
         imgItemSelectedMainImage() {
             if (this.selectedItemIdx === undefined) return undefined
+            console.log('imgItemSelectedMainImage', this.itemSelected.mainImage)
             return this.itemSelected.mainImage
         },
         itemSelected() {
@@ -298,7 +299,7 @@ export default {
             this.maxItems = this.section.data.itemsLoading.itemNumber
             this.selectedCategory = (this.section.data.categories.isAll) ? 'all' : this.section.data.categories.data[0].name
 
-            if (!this.section.data.items) {
+            // if (!this.section.data.items) {
                 this.section.data.items = []
                 for (let i = 0; i < 20; i++) {
                     const tag1 = this.categories.data[Math.ceil(Math.random() * (this.categories.data.length)) - 1].name;
@@ -340,7 +341,7 @@ export default {
                     })
                 }
                 needUpdate = true;
-            }
+            // }
 
             if (needUpdate) {
                 this.sectionCtrl.update(this.section);
