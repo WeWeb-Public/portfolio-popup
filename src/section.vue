@@ -868,6 +868,7 @@ export default {
             position: relative !important;
             height: 33% !important;
             width: 100% !important;
+            z-index: -1;
         }
         top: 0;
         left: 0;
